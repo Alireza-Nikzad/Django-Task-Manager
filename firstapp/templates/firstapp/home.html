@@ -1,0 +1,39 @@
+<a href="{% url 'logout' %}">Logout</a>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My First Django Template</title>
+</head>
+<body>
+    <h2>Add a New Task</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="Task Title" required><br>
+        <textarea name="description" placeholder="Description (optional)"></textarea><br>
+        <button type='submit'>Add task</button>
+    </form>
+    <hr>
+    <h1>Tasks List</h1>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <strong>{{ task.title}}</strong>
+                {% if task.completed%}
+                    <em style="color:green;">Compelted</em>
+                    <a href="{% url 'uncomplete' task.id%}" style = "margin-left:10px;">[Mark as Not Done]</a>
+                {%else%} 
+                    <em style="color:orange;">Not compelted</em>
+                    <a href="{% url 'complete' task.id %}" style="margin-left:10px;">[Mark as Done]</a>
+                {%endif%}
+                <a href="{% url 'delete' task.id %}" style = 'color:red; margin-left:10px;'>[Delete]</a>
+                <a href="{% url 'edit' task.id %}" style="margin-left:10px;">[Edit]</a>
+            </li>
+        {%empty%}
+            <li>No tasks found.</li>
+        {%endfor%}
+    </ul>
+</body>
+</html>
